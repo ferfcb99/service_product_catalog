@@ -2,6 +2,7 @@ package com.quantum.leap.productcatalog.web.controller;
 
 import com.quantum.leap.productcatalog.web.dto.response.SearchProductResponseDto;
 import com.quantum.leap.productcatalog.web.dto.ResponseModelApi;
+import org.springframework.data.domain.Page;
 import org.springframework.http.ResponseEntity;
 
 import java.util.List;
@@ -13,7 +14,10 @@ public interface ProductCatalogController {
                                                                                                    String size,
                                                                                                    String color,
                                                                                                    Double minPrice,
-                                                                                                   Double maxPrice);
+                                                                                                   Double maxPrice,
+                                                                                                   Integer page,
+                                                                                                   Integer sizePage,
+                                                                                                   String sortBy);
 
 
 

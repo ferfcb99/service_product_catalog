@@ -9,6 +9,9 @@ import com.quantum.leap.productcatalog.util.mapper.ProductMapper;
 import com.quantum.leap.productcatalog.util.specification.ProductSpecification;
 import com.quantum.leap.productcatalog.web.dto.response.SearchProductResponseDto;
 import com.quantum.leap.productcatalog.web.exception.model.ProductCatalogExeption;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
 import org.springframework.data.jpa.domain.Specification;
 import org.springframework.stereotype.Service;
 
@@ -31,7 +34,9 @@ public class ProductCatalogServiceImpl implements ProductCatalogService {
                                                                              String size,
                                                                              String color,
                                                                              Double minPrice,
-                                                                             Double maxPrice) {
+                                                                             Double maxPrice,
+                                                                             Integer page,
+                                                                             Integer sizePage) {
        try{
            Specification<ProductVariant> spec = (root, query, cb) -> null;
 
@@ -41,12 +46,12 @@ public class ProductCatalogServiceImpl implements ProductCatalogService {
            spec = spec.and(ProductSpecification.hasColor(color));
            spec = spec.and(ProductSpecification.priceBetween(minPrice, maxPrice));
 
-           List<ProductVariant> productsFiltered = productVariantRepository.findAll(spec);
+           Pageable pageable = PageRequest.of(page, sizePage);
+           Page<ProductVariant> productsFiltered = productVariantRepository.findAll(spec, pageable);
 
            List<SearchProductResponseDto> searchProductResponseDtos = ProductMapper.mapEntityToProductResponseDto(productsFiltered);
            System.out.println("Por lanzar exepcion");
-           throw new ProductCatalogExeption("500", "There was an error while extracting information","details");
-           //return searchProductResponseDtos;
+           return searchProductResponseDtos;
        }catch (ProductCatalogExeption e){
            throw new ProductCatalogExeption(e.getCode(), e.getMessage(), e.getDetails());
        }

@@ -3,6 +3,7 @@ package com.quantum.leap.productcatalog.util.mapper;
 import com.quantum.leap.productcatalog.entity.Product;
 import com.quantum.leap.productcatalog.entity.ProductVariant;
 import com.quantum.leap.productcatalog.web.dto.response.SearchProductResponseDto;
+import org.springframework.data.domain.Page;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -11,7 +12,7 @@ public final class ProductMapper {
 
     ProductMapper() {}
 
-    public static List<SearchProductResponseDto> mapEntityToProductResponseDto(List<ProductVariant> products) {
+    public static List<SearchProductResponseDto> mapEntityToProductResponseDto(Page<ProductVariant> products) {
         List<SearchProductResponseDto> productResponseDtos =
                 products.stream()
                         .map(productVariantEntity ->

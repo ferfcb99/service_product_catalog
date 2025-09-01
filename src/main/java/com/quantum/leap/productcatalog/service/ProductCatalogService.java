@@ -12,6 +12,8 @@ public interface ProductCatalogService {
                                                                       String size,
                                                                       String color,
                                                                       Double minPrice,
-                                                                      Double maxPrice);
+                                                                      Double maxPrice,
+                                                                      Integer page,
+                                                                      Integer sizePage);
 
 }
