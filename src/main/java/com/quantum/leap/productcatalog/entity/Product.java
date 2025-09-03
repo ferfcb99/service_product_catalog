@@ -54,17 +54,16 @@ public class Product implements Serializable {
 
     @PrePersist
     public void prePersist() {
-        if(createdAt == null) {
-            createdAt = LocalDateTime.now();
-        }
+        createdAt = LocalDateTime.now();
+        updatedAt = LocalDateTime.now();
     }
 
     @PreUpdate
     public void preUpdate() {
-        if(updatedAt == null) {
-            updatedAt = LocalDateTime.now();
-        }
+        updatedAt = LocalDateTime.now();
     }
+
+
 
     public Product() {}
 

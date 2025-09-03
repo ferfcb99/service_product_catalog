@@ -8,6 +8,9 @@ public class ProductCatalogExeption extends RuntimeException {
 
     private String details;
 
+    public ProductCatalogExeption(String message) {
+        super(message);
+    }
 
     public ProductCatalogExeption(String code, String message, String details) {
         super(message);

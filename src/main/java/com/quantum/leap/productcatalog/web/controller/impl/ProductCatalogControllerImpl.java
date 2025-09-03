@@ -2,17 +2,18 @@ package com.quantum.leap.productcatalog.web.controller.impl;
 
 import com.quantum.leap.productcatalog.service.ProductCatalogService;
 import com.quantum.leap.productcatalog.web.controller.ProductCatalogController;
+import com.quantum.leap.productcatalog.web.dto.request.CreateProductDto;
+import com.quantum.leap.productcatalog.web.dto.request.CreateProductVariantDto;
+import com.quantum.leap.productcatalog.web.dto.request.UpdateProductDto;
 import com.quantum.leap.productcatalog.web.dto.response.SearchProductResponseDto;
 import com.quantum.leap.productcatalog.web.dto.ResponseModelApi;
 import com.quantum.leap.productcatalog.web.exception.model.ProductCatalogExeption;
+import jakarta.validation.Valid;
 import org.springframework.data.domain.Page;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestParam;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -46,6 +47,46 @@ public class ProductCatalogControllerImpl implements ProductCatalogController {
             return new ResponseEntity<>(new ResponseModelApi<>(String.valueOf(HttpStatus.OK.value()), "gotten", productsFiltered), HttpStatus.OK);
         }catch (ProductCatalogExeption e){
             //e.printStackTrace();
+            throw new ProductCatalogExeption(e.getCode(), e.getMessage(), e.getDetails());
+        }
+    }
+
+    @Override
+    @PostMapping(value = "/create-product", produces = MediaType.APPLICATION_JSON_VALUE, consumes = MediaType.APPLICATION_JSON_VALUE)
+    public ResponseEntity<ResponseModelApi<CreateProductDto>> createProduct(
+            @RequestBody @Valid CreateProductDto createProductDto) {
+        try{
+            CreateProductDto productCreated = this.productCatalogService.createProduct(createProductDto);
+            return ResponseEntity
+                    .ok(new ResponseModelApi<>(String.valueOf(HttpStatus.OK.value()), "gotten", productCreated));
+        }catch(ProductCatalogExeption e){
+            throw new ProductCatalogExeption(e.getCode(), e.getMessage(), e.getDetails());
+        }
+    }
+
+    @Override
+    @PostMapping(value = "/create-product-variant", produces = MediaType.APPLICATION_JSON_VALUE, consumes = MediaType.APPLICATION_JSON_VALUE)
+    public ResponseEntity<ResponseModelApi<CreateProductVariantDto>> createProductVariant(
+            @RequestBody @Valid CreateProductVariantDto createProductVariantDto) {
+        try{
+            CreateProductVariantDto productVariantCreated = this.productCatalogService.createProductVariant(createProductVariantDto);
+            return ResponseEntity
+                    .ok(new ResponseModelApi<>(String.valueOf(HttpStatus.OK.value()), "gotten", productVariantCreated));
+        }catch(ProductCatalogExeption e){
+            throw new ProductCatalogExeption(e.getCode(), e.getMessage(), e.getDetails());
+        }
+    }
+
+    @Override
+    @PutMapping(value = "/update-product-or-variant", produces = MediaType.APPLICATION_JSON_VALUE, consumes = MediaType.APPLICATION_JSON_VALUE)
+    public ResponseEntity<ResponseModelApi<UpdateProductDto>> updateProductOrVariant(
+            @RequestBody UpdateProductDto updateProductDto) {
+        try{
+            UpdateProductDto updatedProduct = this.productCatalogService.updateProductOrVariant(updateProductDto);
+            return ResponseEntity
+                    .ok(new ResponseModelApi<>(String.valueOf(HttpStatus.OK.value()), "gotten", updatedProduct));
+        }catch (ProductCatalogExeption e){
+            e.printStackTrace();
             throw new ProductCatalogExeption(e.getCode(), e.getMessage(), e.getDetails());
         }
     }
